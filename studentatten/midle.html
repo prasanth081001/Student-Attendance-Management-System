@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Student Attendance Management System</title>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <style>
+    body {
+      background-color: #f8f9fa;
+    }
+    .container {
+      margin-top: 50px;
+    }
+    .card {
+      border: none;
+      border-radius: 10px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    }
+    .card-header {
+      background-color: #007bff;
+      color: #fff;
+      text-align: center;
+      border-bottom: none;
+      border-top-left-radius: 10px;
+      border-top-right-radius: 10px;
+    }
+    .card-body {
+      padding: 30px;
+    }
+    .btn-logout {
+      border-radius: 25px;
+    }
+    #attendanceTable {
+      margin-top: 20px;
+    }
+  </style>
+</head>
+<body>
+
+<!-- Login Page -->
+<div class="container" id="loginPage">
+  <div class="row justify-content-center">
+    <div class="col-md-4">
+      <div class="card">
+        <div class="card-header">
+          <h3>Login</h3>
+        </div>
+        <div class="card-body">
+          <form id="loginForm">
+            <div class="form-group">
+              <label for="username">Username</label>
+              <input type="text" class="form-control" id="username" placeholder="Enter username" value="student1">
+            </div>
+            <div class="form-group">
+              <label for="password">Password</label>
+              <input type="password" class="form-control" id="password" placeholder="Enter password" value="password1">
+            </div>
+            <button type="submit" class="btn btn-primary btn-block">Login</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Main Dashboard -->
+<div class="container" id="dashboard" style="display: none;">
+  <div class="row justify-content-center">
+    <div class="col-md-8">
+      <div class="card">
+        <div class="card-header">
+          <h3>Welcome, <span id="loggedInUser"></span></h3>
+          <button class="btn btn-danger btn-logout float-right" onclick="logout()">Logout</button>
+        </div>
+        <div class="card-body">
+          <h4>Attendance</h4>
+          <table class="table table-bordered" id="attendanceTable">
+            <thead>
+              <tr>
+                <th>Date</th>
+                <th>Status</th>
+              </tr>
+            </thead>
+            <tbody>
+              <!-- Attendance records will be populated here dynamically using JavaScript -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  // Dummy user data
+  const users = [
+    { username: "student1", password: "password1", name: "Student 1" },
+    { username: "student2", password: "password2", name: "Student 2" }
+    // Add more users as needed
+  ];
+
+  // Dummy attendance data
+  const attendanceData = [
+    { date: "2024-04-28", status: "Present" },
+    { date: "2024-04-27", status: "Absent" },
+    { date: "2024-04-26", status: "Present" }
+    // Add more data as needed
+  ];
+
+  // Login form submission
+  document.getElementById('loginForm').addEventListener('submit', function(event) {
+    event.preventDefault();
+    const username = document.getElementById('username').value;
+    const password = document.getElementById('password').value;
+    const user = users.find(u => u.username === username && u.password === password);
+    if (user) {
+      document.getElementById('loggedInUser').innerText = user.name;
+      populateAttendanceTable();
+      document.getElementById('loginPage').style.display = 'none';
+      document.getElementById('dashboard').style.display = 'block';
+    } else {
+      alert('Invalid username or password');
+    }
+  });
+
+  // Function to populate attendance table
+  function populateAttendanceTable() {
+    const tableBody = document.querySelector('#attendanceTable tbody');
+    tableBody.innerHTML = '';
+    attendanceData.forEach(data => {
+      const row = document.createElement('tr');
+      row.innerHTML = `
+        <td>${data.date}</td>
+        <td>${data.status}</td>
+      `;
+      tableBody.appendChild(row);
+    });
+  }
+
+  // Function to logout
+  function logout() {
+    document.getElementById('loginPage').style.display = 'block';
+    document.getElementById('dashboard').style.display = 'none';
+    document.getElementById('username').value = '';
+    document.getElementById('password').value = '';
+  }
+</script>
+
+</body>
+</html>

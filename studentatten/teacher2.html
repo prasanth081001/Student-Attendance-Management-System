@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Teacher Attendance Management System</title>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <style>
+    body {
+      background-color: #f8f9fa;
+    }
+    .container {
+      margin-top: 50px;
+    }
+    .card {
+      border: none;
+      border-radius: 10px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    }
+    .card-header {
+      background-color: #007bff;
+      color: #fff;
+      text-align: center;
+      border-bottom: none;
+      border-top-left-radius: 10px;
+      border-top-right-radius: 10px;
+    }
+    .card-body {
+      padding: 30px;
+    }
+    .btn-mark {
+      border-radius: 25px;
+    }
+    #attendanceTable {
+      margin-top: 20px;
+    }
+  </style>
+</head>
+<body>
+
+<div class="container">
+  <div class="row justify-content-center">
+    <div class="col-md-8">
+      <div class="card">
+        <div class="card-header">
+          <h3>Mark Attendance</h3>
+          <p>Date: <span id="currentDate"></span></p>
+        </div>
+        <div class="card-body">
+          <form id="attendanceForm">
+            <table class="table table-bordered" id="attendanceTable">
+              <thead>
+                <tr>
+                  <th>Student Name</th>
+                  <th>Attendance</th>
+                </tr>
+              </thead>
+              <tbody>
+                <!-- Student attendance fields will be populated here dynamically using JavaScript -->
+              </tbody>
+            </table>
+            <button type="submit" class="btn btn-primary btn-block btn-mark">Submit</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  // Customizable data
+  const currentDate = new Date().toLocaleDateString(); // Get current date
+
+  // Dummy student data
+  const students = [
+    "Student 1",
+    "Student 2",
+    "Student 3",
+    "Student 4",
+    "Student 5",
+    "Student 6",
+    "Student 7",
+    "Student 8",
+    "Student 9",
+    "Student 10",
+    "Student 11",
+    "Student 12",
+    "Student 13",
+    "Student 14",
+    "Student 15",
+    "Student 16",
+    "Student 17",
+    "Student 18",
+    "Student 19",
+    "Student 20"
+  ];
+
+  // Function to populate attendance table
+  function populateAttendanceTable() {
+    const tableBody = document.querySelector('#attendanceTable tbody');
+    students.forEach(student => {
+      const row = document.createElement('tr');
+      row.innerHTML = `
+        <td>${student}</td>
+        <td>
+          <select class="form-control" id="${student.replace(/\s+/g, '')}">
+            <option value="Present">Present</option>
+            <option value="Absent">Absent</option>
+          </select>
+        </td>
+      `;
+      tableBody.appendChild(row);
+    });
+  }
+
+  // Update current date in the HTML
+  document.getElementById('currentDate').innerText = currentDate;
+
+  // Form submission to handle marking attendance
+  document.getElementById('attendanceForm').addEventListener('submit', function(event) {
+    event.preventDefault();
+    const attendanceData = {};
+    students.forEach(student => {
+      const attendance = document.getElementById(student.replace(/\s+/g, '')).value;
+      attendanceData[student] = attendance;
+    });
+    console.log(attendanceData); // You can send this data to the server for further processing
+    alert('Attendance marked successfully!');
+    // Optionally, you can reset the form here
+  });
+
+  // Populate attendance table when the page loads
+  document.addEventListener('DOMContentLoaded', () => {
+    populateAttendanceTable();
+  });
+</script>
+
+</body>
+</html>
